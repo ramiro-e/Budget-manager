@@ -1,0 +1,35 @@
+{
+  "name": "alkemy-fullstack-javascript-challenge",
+  "version": "1.0.0",
+  "description": "a programming challenge for fullstack javascript certification encompassing a Node API and React frontend for a online budgeting app with user auth functionality",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ramiro-e/Alkemy-fullstack-javascript-challenge.git"
+  },
+  "author": "Ramiro Manuel Estevez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ramiro-e/Alkemy-fullstack-javascript-challenge/issues"
+  },
+  "homepage": "https://github.com/ramiro-e/Alkemy-fullstack-javascript-challenge#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.10.0",
+    "fs": "0.0.1-security",
+    "method-override": "^3.0.0",
+    "mysql2": "^2.2.5",
+    "nodemon": "^2.0.7",
+    "sequelize": "^6.6.2",
+    "sequelize-automate": "^1.2.2"
+  },
+  "devDependencies": {
+    "cors": "^2.8.5"
+  }
+}
