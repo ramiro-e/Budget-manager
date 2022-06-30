@@ -2,7 +2,7 @@ module.exports = {
   "development": {
     "username": "root",
     "password": null,
-    "database": "alkemy-fullstack-javascript-challenge",
+    "database": "alkemy_fullstack_javascript_challenge",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

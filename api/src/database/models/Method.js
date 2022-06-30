@@ -12,7 +12,7 @@ module.exports =  (sequelize, DataTypes) => {
             allowNull: false
         },
         createdAt:{
-            type:dataTypes.DATE,
+            type:DataTypes.DATE,
             allowNull: true
         }
     }
@@ -24,7 +24,7 @@ module.exports =  (sequelize, DataTypes) => {
 
     Method.associate = function (models) {
         Method.hasMany(models.Transaction,{
-            as: "name",
+            as: "method",
             foreingKey: "methodId"
         });
     }

@@ -1,5 +1,5 @@
 module.exports =  (sequelize, DataTypes) => {
-    let alias = "User"
+    let alias = "Account"
     let cols = {
         id: {
             type: DataTypes.INTEGER.UNSIGNED,
@@ -7,19 +7,19 @@ module.exports =  (sequelize, DataTypes) => {
             allowNull: false,
             autoIncrement: true
         },
-        email:{ 
-            type: DataTypes.STRING,
+        userId: {
+            type: dataTypes.INTEGER,
             allowNull: false
         },
-        firstName:{ 
+        name:{ 
             type: DataTypes.STRING,
             allowNull: true
         },
-        lastName:{ 
-            type: DataTypes.STRING,
-            allowNull: true
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: false
         },
-        password: {
+        color: {
             type: DataTypes.TEXT,
             allowNull: false
         },
@@ -32,15 +32,20 @@ module.exports =  (sequelize, DataTypes) => {
         tableName: "users",
         timestamps: false
     }
-    const User = sequelize.define(alias, cols, config);
+    const Account = sequelize.define(alias, cols, config);
 
-    User.associate = function (models) {
+    Account.associate = function (models) {
         
-        User.hasMany(models.Account,{
+        Account.belongsTo(models.User,{
             as: "user",
             foreingKey: "userId"
         });
+
+        Account.hasMany(models.Transaction,{
+            as: "account",
+            foreingKey: "accountId"
+        });
     }
     
-    return User;
+    return Account;
 }

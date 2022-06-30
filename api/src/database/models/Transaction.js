@@ -7,12 +7,12 @@ module.exports =  (sequelize, DataTypes) => {
             allowNull: false,
             autoIncrement: true
         },
-        userId: {
-            type: dataTypes.INTEGER,
+        accountId: {
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         datetime:{
-            type:dataTypes.DATE,
+            type:DataTypes.DATE,
             allowNull: true
         },
         name:{ 
@@ -20,7 +20,7 @@ module.exports =  (sequelize, DataTypes) => {
             allowNull: true
         },
         categoryId: {
-            type: dataTypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         description: {
@@ -28,34 +28,45 @@ module.exports =  (sequelize, DataTypes) => {
             allowNull: false
         },
         amount: {
-            type: dataTypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         depOrWit: {
-            type: dataTypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         methodId: {
-            type: dataTypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         createdAt:{
-            type:dataTypes.DATE,
+            type:DataTypes.DATE,
             allowNull: true
         }
     }
     let config = {
-        tableName: "users",
+        tableName: "accounts",
         timestamps: false
     }
-    const User = sequelize.define(alias, cols, config);
+    const Transaction = sequelize.define(alias, cols, config);
 
-    User.associate = function (models) {
-        User.hasMany(models.Transaction,{
-            as: "user",
-            foreingKey: "userId"
+    Transaction.associate = function (models) {
+
+        Transaction.belongsTo(models.Account,{
+            as: "account",
+            foreingKey: "accountId"
+        });
+
+        Transaction.belongsTo(models.Category,{
+            as: "category",
+            foreingKey: "categoryId"
+        });
+        
+        Transaction.belongsTo(models.Method,{
+            as: "method",
+            foreingKey: "methodId"
         });
     }
     
-    return User;
+    return Transaction;
 }
