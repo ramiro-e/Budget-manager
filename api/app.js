@@ -4,8 +4,8 @@ const methodOverride = require('method-override');
 const cors = require('cors');
 
 const app = express();
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
+// const session = require('express-session');
+// const cookieParser = require('cookie-parser');
 
 const mainRouter = require('./src/routers/mainRouter');
 const userRouter = require('./src/routers/userRouter');
@@ -29,12 +29,13 @@ app.listen(app.get('port'), () => {
     console.log(`[app] http://localhost:3001`);
 } );
 
-app.use(session({
-    secret : 'topSecret',
-    resave: true,
-    saveUninitialized: true,
-}))
+// app.use(session({
+//     secret : 'topSecret',
+//     resave: true,
+//     saveUninitialized: true,
+// }))
 
-app.use(cookieParser());
+// app.use(cookieParser());
 
 app.use(authMiddleware);
+

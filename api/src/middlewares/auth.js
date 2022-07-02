@@ -1,7 +1,26 @@
-const express = require('express');
-const router = express.Router();
+const db = require('../database/models');
+const User = db.User
+const Account = db.Account
+const jwt = require('jsonwebtoken')
 
 
-module.exports = (req,res,next) =>{
 
+module.exports = async (req,res,next) =>{
+    let bearerHeader =  req.headers['authorization'];
+    let bearerToken 
+    if(typeof bearerHeader !== 'undefined'){
+        bearerToken = bearerHeader.split(" ")[1];
+    }else{
+        res.sendStatus(403);
+    }
+
+    jwt.verify(bearerToken, 'secretkey', (error, authData) => {
+        console.log(authData)
+        if(error){
+            res.sendStatus(403);
+        }else{
+            req['userData'] = authData
+            next()
+        }
+    });
 }
