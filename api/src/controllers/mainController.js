@@ -31,29 +31,27 @@ const mainControllers = {
         })
     },
     getAllTransactions: (req, res) =>{
-        Account.findAll({
-            where:{userId: req.userId}
-        })
-        .then((accounts) =>{
-            let accountIdArray = accounts.map((account) =>{ return account.id; })
-            return Transaction.findAll({
-                where:{accountId: {[Op.or]: accountIdArray}},
-            })
+        Transaction.findAll({
+            where:{accountId: req.accountId}
         })
         .then((lastTransactions)=>{
             res.send(lastTransactions)
         })
     },
     getLastTransactions: (req, res) =>{
-        Account.findAll({
-            where:{userId: req.userId}
-        })
-        .then((accounts) =>{
-            let accountIdArray = accounts.map((account) =>{ return account.id; })
-            return Transaction.findAll({
-                where:{accountId: {[Op.or]: accountIdArray}},
-                limit: 10
-            })
+        Transaction.findAll({
+            include: [{
+                model: Account,
+                required: true,
+                include: [{
+                    model: User,
+                    required: true,
+                    where: {
+                        id: userId // here is the condition on a certain user id
+                    }
+                }]
+            }],
+            limit: 10            
         })
         .then((lastTransactions)=>{
             res.send(lastTransactions)
