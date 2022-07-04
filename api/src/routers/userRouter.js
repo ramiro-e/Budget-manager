@@ -55,10 +55,10 @@ const ValidationRegister = (req, res, next) => {
 };
 
 
-router.post('/login', validateEmail ,userController.login);
+router.post('/login', validationLogin ,userController.login);
 router.post('/logout', userController.logout);
 
-router.post('/register', validationLogin ,userController.register);
+router.post('/register', ValidationRegister ,userController.register);
 
 
 
