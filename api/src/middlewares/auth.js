@@ -15,7 +15,6 @@ module.exports = async (req,res,next) =>{
     }
 
     jwt.verify(bearerToken, 'secretkey', (error, authData) => {
-        console.log(authData)
         if(error){
             res.sendStatus(403);
         }else{
