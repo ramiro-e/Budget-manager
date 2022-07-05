@@ -3,6 +3,7 @@ const Transaction = db.Transaction
 const User = db.User
 const Account = db.Account
 const { Op } = require("sequelize");
+const jwt = require('jsonwebtoken')
 
 const mainControllers = {
     getAccouts:(req, res) =>{
@@ -10,7 +11,26 @@ const mainControllers = {
             where:{accountId: req.accountId}
         })
         .then((account)=>{
-            res.send(account)
+            let response = {
+                meta: {
+                    status: 200,
+                    total: account.length,
+                },
+                data: account
+            }
+            let token = signToken(response)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     },
     getAccountBalance: (req, res) =>{
@@ -27,15 +47,53 @@ const mainControllers = {
             return balance
         })
         .then((balance)=>{
-            res.send(balance)
+            let response = {
+                meta: {
+                    status: 200,
+                    total: balance.length,
+                },
+                data: balance
+            }
+            let token = signToken(response)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     },
     getAllTransactions: (req, res) =>{
         Transaction.findAll({
             where:{accountId: req.accountId}
         })
-        .then((lastTransactions)=>{
-            res.send(lastTransactions)
+        .then((allTransactions)=>{
+            let response = {
+                meta: {
+                    status: 200,
+                    total: allTransactions.length,
+                },
+                data: allTransactions
+            }
+            let token = signToken(response)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     },
     getLastTransactions: (req, res) =>{
@@ -54,7 +112,26 @@ const mainControllers = {
             limit: 10            
         })
         .then((lastTransactions)=>{
-            res.send(lastTransactions)
+            let response = {
+                meta: {
+                    status: 200,
+                    total: lastTransactions.length,
+                },
+                data: lastTransactions
+            }
+            let token = signToken(response)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     },
     getTransactionById: (req, res) =>{
@@ -65,8 +142,27 @@ const mainControllers = {
                 model: Method
             }]
         })
-        .then((lastTransactions)=>{
-            res.send(lastTransactions)
+        .then((Transaction)=>{
+            let response = {
+                meta: {
+                    status: 200,
+                    total: Transaction.length,
+                },
+                data: Transaction
+            }
+            let token = signToken(response)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     },
     newTransaction: (req, res) =>{
@@ -81,7 +177,19 @@ const mainControllers = {
             methodId: req.methodId
         })
         .then(()=>{
-            res.send(200)
+            let token = signToken(200)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     },
     editTransaction: (req, res) =>{
@@ -99,7 +207,19 @@ const mainControllers = {
             }
         })
         .then(()=>{
-            res.send(200)
+            let token = signToken(200)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     },
     deleteTransaction: (req, res) =>{
@@ -109,10 +229,31 @@ const mainControllers = {
             }
         })
         .then(()=>{
-            res.send(200)
+            let token = signToken(200)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
         })
     }
 
 
 }
+
+function signToken(payload){
+    let token = jwt.sign({ payload }, 'secretkey', {
+		algorithm: "HS256",
+		expiresIn: '1h',
+	})
+    return token
+}
+
 module.exports = mainControllers;

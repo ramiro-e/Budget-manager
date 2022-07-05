@@ -4,7 +4,6 @@ const userController = require('../controllers/userController');
 const db = require('../database/models');
 const User = db.User
 const authorize = require('../middlewares/auth')
-const jwt = require('jsonwebtoken')
 
 
 const validationLogin = (req, res, next) => {
@@ -15,7 +14,6 @@ const validationLogin = (req, res, next) => {
         if (!user) {
             res.send(404);
         } else if(bcrypt.compareSync(req.password, user.dataValues.password)){
-            res.send(200);
             next()
         }else{
             res.send(403);
