@@ -6,9 +6,9 @@ const { Op } = require("sequelize");
 const jwt = require('jsonwebtoken')
 
 const mainControllers = {
-    getAccouts:(req, res) =>{
+    getUserAccounts:(req, res) =>{
         Account.findAll({
-            where:{accountId: req.accountId}
+            where:{userId: req.userId}
         })
         .then((account)=>{
             let response = {
@@ -33,26 +33,17 @@ const mainControllers = {
 
         })
     },
-    getAccountBalance: (req, res) =>{
-        Transaction.findAll({
-            where:{accountId: req.accountId},
-            include: [{
-                model: Category
-            },{
-                model: Method
-            }]
+    getAccountData:(req, res) =>{
+        Account.findOne({
+            where:{id: req.accountId}
         })
-        .then((transactions) =>{ 
-            let balance = transactions.map((transaction) =>{ return transaction.amount; }).reduce((a,b)=> a + b);
-            return balance
-        })
-        .then((balance)=>{
+        .then((account)=>{
             let response = {
                 meta: {
                     status: 200,
-                    total: balance.length,
+                    total: account.length,
                 },
-                data: balance
+                data: account
             }
             let token = signToken(response)
             res.json({token})
@@ -69,9 +60,51 @@ const mainControllers = {
 
         })
     },
-    getAllTransactions: (req, res) =>{
+    getAccountTransaction: (req, res) =>{
         Transaction.findAll({
-            where:{accountId: req.accountId}
+            where:{accountId: req.accountId},
+            include: [{
+                model: Category
+            },{
+                model: Method
+            }]
+        })
+        .then((transactions) =>{ 
+            let balance = transactions.map((transaction) =>{ return transaction.amount; }).reduce((a,b)=> a + b);
+            return {balance, transactions}
+        })
+        .then((transactions)=>{
+            let response = {
+                meta: {
+                    status: 200,
+                    total: transactions.transactions.length,
+                },
+                data: transactions
+            }
+            let token = signToken(response)
+            res.json({token})
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            }
+            let errorToken = signToken(response)
+            res.json({errorToken})    
+
+        })
+    },
+    getAccountTransactions: (req, res) =>{
+        Transaction.findAll({
+            include: [{
+                model: Account,
+                required: true,
+                where: {
+                    id: req.accountId // here is the condition on a certain user id
+                }
+            }],
         })
         .then((allTransactions)=>{
             let response = {
@@ -96,7 +129,7 @@ const mainControllers = {
 
         })
     },
-    getLastTransactions: (req, res) =>{
+    getUserLastTransactions: (req, res) =>{
         Transaction.findAll({
             include: [{
                 model: Account,
