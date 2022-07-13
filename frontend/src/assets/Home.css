@@ -1,0 +1,85 @@
+.bgcolor-f94144{
+    background-color:#f94144;
+}
+.bgcolor-f3722c{
+    background-color:#f3722c;
+}
+.bgcolor-f8961e{
+    background-color:#f8961e;
+}
+.bgcolor-f9844a{
+    background-color:#f9844a;
+}
+.bgcolor-f9c74f{
+    background-color:#f9c74f;
+}
+.bgcolor-90be6d{
+    background-color:#90be6d;
+}
+.bgcolor-43aa8b{
+    background-color:#43aa8b;
+}
+.bgcolor-4d908e{
+    background-color:#4d908e;
+}
+.bgcolor-577590{
+    background-color:#577590;
+}
+.bgcolor-277da1{
+    background-color:#277da1;
+}
+.fontcolor-white{
+    color: #ffffffff
+}
+.fontcolor-lightgray{
+    color: lightgray
+}
+.name{
+    font-size: 30px;
+}
+.balance{
+    font-size: 25px;
+}
+
+.overflow-protection{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.color-tab{
+    width: 10px;
+}
+
+.transaction-cards-container{
+    min-height: 450px;
+    overflow-y: scroll;
+}
+.cards-container{
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.recipt{
+    font-size: 100px
+}
+
+* {
+scrollbar-width: thin;
+scrollbar-color: #c9c9c9 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+background-color: #c9c9c9;
+border-radius: 15px;
+border: 3px solid #ffffff;
+}
