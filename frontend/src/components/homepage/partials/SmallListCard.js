@@ -1,6 +1,7 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 
-function SmallListCard({transaction}){
+function SmallListCard({transaction, previewMethod}){
     
     let {Account, name, Category, createdAt, amount} = transaction
 
@@ -30,6 +31,13 @@ function SmallListCard({transaction}){
         $color = 'primary'
     }
 
+
+    let previewTransaction = previewMethod
+    function handleClick(){
+        previewTransaction(transaction)
+    }
+
+    // console.log(Object.getOwnPropertyNames(props))
 
     return(
         <React.Fragment>

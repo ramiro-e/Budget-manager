@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate } from 'react-router-dom'
+import postServices from '../../../api/postServices';
 import { Button } from 'react-bootstrap';
 import { Plus, BoxArrowRight } from 'react-bootstrap-icons';
 
 function AccountHeader({setModalShow}){
 
+    const [redirect, setRedirect] = useState(false)
+    function handleLogout(){
+        localStorage.removeItem('loginToken');
+        setRedirect(true)
+    }
 
     return (
         <React.Fragment>
+            {redirect && ( <Navigate to="/login" replace={true} />)}
             <div className="pt-2">
                 <div className="d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center">
