@@ -4,15 +4,16 @@ import Form from 'react-bootstrap/Form'
 import { Button } from 'react-bootstrap';
 import postServices from '../../../api/postServices';
 
-function NewAccount({setModalShow}) {
+function NewAccount({setModalShow, updateStates}) {
 
     async function handleSaveAccount(){
         console.log('handleSaveAccount')
         let accountName = document.getElementById('accountName').value
         let response = await postServices.newAccount({name: accountName})
         console.log(response)
-        if (response.meta.status === 200){
+        if (response === 200){
             setModalShow(false)
+            updateStates()
         }
     }
 
