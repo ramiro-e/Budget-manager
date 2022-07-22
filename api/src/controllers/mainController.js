@@ -2,13 +2,16 @@ const db = require('../database/models');
 const Transaction = db.Transaction
 const User = db.User
 const Account = db.Account
+const Category = db.Category
+const Method = db.Method
 const { Op } = require("sequelize");
+const sequelize = require("sequelize");
 const jwt = require('jsonwebtoken')
 
 const mainControllers = {
     getUserAccounts:(req, res) =>{
         Account.findAll({
-            where:{userId: req.userId}
+            where:{userId: req.userData.id}
         })
         .then((account)=>{
             let response = {
@@ -18,8 +21,7 @@ const mainControllers = {
                 },
                 data: account
             }
-            let token = signToken(response)
-            res.json({token})
+            res.json(response)
         })
         .catch((error)=>{
             console.log(error)
@@ -27,84 +29,151 @@ const mainControllers = {
                 meta: {
                     status: 400
                 }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
+            } 
+            res.json(response)  
 
         })
+    },
+    getCategories:(req, res) =>{
+        Category.findAll()
+        .then((categories)=>{
+            let response = {
+                meta: {
+                    status: 200,
+                    total: categories.length,
+                },
+                data: categories
+            }
+            res.json(response)
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            } 
+            res.json(response)  
+
+        })
+    },
+    getMethods:(req, res) =>{
+        Method.findAll()
+        .then((categories)=>{
+            let response = {
+                meta: {
+                    status: 200,
+                    total: categories.length,
+                },
+                data: categories
+            }
+            res.json(response)
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            } 
+            res.json(response)  
+
+        })
+    },
+    getUserAccountsData:async (req, res) =>{
+        try {
+            let userAccounts = await Account.findAll({
+                where:{userId: req.userData.id},
+                raw: true
+            })
+            console.log(userAccounts)
+            let accountsWithBalance = []
+            for(let account of userAccounts){
+                try {
+                    let balance = await Transaction.findAll({            
+                        attributes: [
+                            [sequelize.fn('sum', sequelize.col('amount')), 'amount'],
+                        ],
+                        group: ['accountId'],
+                        where:{accountId: account.id},
+                        raw: true
+                    })
+                    let accountCopy = {...account}
+                    if(balance[0]){
+                        accountCopy['balance'] = balance[0].amount
+                    }else{
+                        accountCopy['balance'] = 0
+                    }
+                    accountsWithBalance.push(accountCopy)
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            let response = {
+                meta: {
+                    status: 200,
+                    total: accountsWithBalance.length,
+                },
+                data: accountsWithBalance
+            }
+            res.json(response)
+        } catch (error) {
+            console.log(error)
+        }  
     },
     getAccountData:(req, res) =>{
-        Account.findOne({
-            where:{id: req.accountId}
-        })
-        .then((account)=>{
-            let response = {
-                meta: {
-                    status: 200,
-                    total: account.length,
-                },
-                data: account
-            }
-            let token = signToken(response)
-            res.json({token})
-        })
-        .catch((error)=>{
-            console.log(error)
-            let response = {
-                meta: {
-                    status: 400
-                }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
-
-        })
-    },
-    getAccountTransaction: (req, res) =>{
-        Transaction.findAll({
-            where:{accountId: req.accountId},
-            include: [{
-                model: Category
-            },{
-                model: Method
-            }]
-        })
-        .then((transactions) =>{ 
-            let balance = transactions.map((transaction) =>{ return transaction.amount; }).reduce((a,b)=> a + b);
-            return {balance, transactions}
-        })
-        .then((transactions)=>{
-            let response = {
-                meta: {
-                    status: 200,
-                    total: transactions.transactions.length,
-                },
-                data: transactions
-            }
-            let token = signToken(response)
-            res.json({token})
-        })
-        .catch((error)=>{
-            console.log(error)
-            let response = {
-                meta: {
-                    status: 400
-                }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
-
-        })
-    },
-    getAccountTransactions: (req, res) =>{
         Transaction.findAll({
             include: [{
                 model: Account,
                 required: true,
                 where: {
-                    id: req.accountId // here is the condition on a certain user id
+                    id: req.body.accountId 
                 }
-            }],
+            },{
+                model: Category
+            },{
+                model: Method
+            }],            
+            attributes: [
+                'accountId',
+                [sequelize.fn('sum', sequelize.col('amount')), 'total_amount'],
+            ],
+            group: ['accountId']
+        })
+        .then((account)=>{
+            let response = {
+                meta: {
+                    status: 200,
+                    total: account.length,
+                },
+                data: account
+            }
+            res.json(response)
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            } 
+            res.json(response)  
+
+        })
+    },
+    getAccountAllTransactions: (req, res) =>{
+        Transaction.findAll({
+            include: [{
+                model: Account,
+                required: true,
+                where: {
+                    id: req.body.accountId 
+                }
+            },{
+                model: Category
+            },{
+                model: Method
+            }]
         })
         .then((allTransactions)=>{
             let response = {
@@ -114,8 +183,7 @@ const mainControllers = {
                 },
                 data: allTransactions
             }
-            let token = signToken(response)
-            res.json({token})
+            res.json(response)
         })
         .catch((error)=>{
             console.log(error)
@@ -123,9 +191,8 @@ const mainControllers = {
                 meta: {
                     status: 400
                 }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
+            } 
+            res.json(response)  
 
         })
     },
@@ -138,13 +205,19 @@ const mainControllers = {
                     model: User,
                     required: true,
                     where: {
-                        id: userId // here is the condition on a certain user id
+                        id: req.userData.id
                     }
                 }]
+            },{
+                model: Category
+            },{
+                model: Method
             }],
             limit: 10            
         })
         .then((lastTransactions)=>{
+            // console.log("\x1b[36m",lastTransactions)
+
             let response = {
                 meta: {
                     status: 200,
@@ -152,8 +225,7 @@ const mainControllers = {
                 },
                 data: lastTransactions
             }
-            let token = signToken(response)
-            res.json({token})
+            res.json(response)
         })
         .catch((error)=>{
             console.log(error)
@@ -161,9 +233,8 @@ const mainControllers = {
                 meta: {
                     status: 400
                 }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
+            } 
+            res.json(response)  
 
         })
     },
@@ -183,8 +254,7 @@ const mainControllers = {
                 },
                 data: Transaction
             }
-            let token = signToken(response)
-            res.json({token})
+            res.json(response)
         })
         .catch((error)=>{
             console.log(error)
@@ -192,26 +262,46 @@ const mainControllers = {
                 meta: {
                     status: 400
                 }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
+            } 
+            res.json(response)  
+
+        })
+    },
+    newAccount: (req, res) =>{
+        let colors = ['f94144','f3722c','f8961e','f9844a','f9c74f','90be6d','43aa8b','4d908e','577590','277da1']
+        let randomColor = colors[Math.floor(Math.random()*colors.length)];
+        console.log('\x1b[36m%s\x1b[0m', randomColor)
+        Account.create({
+            userId: req.userData.id,
+            name: req.body.name,
+            color: randomColor
+        })
+        .then(()=>{
+            res.json(200)
+        })
+        .catch((error)=>{
+            console.log(error)
+            let response = {
+                meta: {
+                    status: 400
+                }
+            } 
+            res.json(response)  
 
         })
     },
     newTransaction: (req, res) =>{
         Transaction.create({
-            accountId: req.accountId,
-            datetime: req.datetime,
-            name: req.name,
-            categoryId: req.categoryId,
-            description: req.description,
-            amount: req.amount,
-            depOrWit: req.depOrWit,
-            methodId: req.methodId
+            accountId: req.body.accountId,
+            // datetime: req.body.datetime,
+            name: req.body.name,
+            categoryId: req.body.categoryId,
+            description: req.body.description,
+            amount: req.body.amount,
+            methodId: req.body.methodId
         })
         .then(()=>{
-            let token = signToken(200)
-            res.json({token})
+            res.json(200)
         })
         .catch((error)=>{
             console.log(error)
@@ -219,29 +309,26 @@ const mainControllers = {
                 meta: {
                     status: 400
                 }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
+            } 
+            res.json(response)  
 
         })
     },
     editTransaction: (req, res) =>{
         Transaction.update({
-            accountId: req.accountId,
-            datetime: req.datetime,
-            name: req.name,
-            categoryId: req.categoryId,
-            description: req.description,
-            amount: req.amount,
-            methodId: req.methodId
+            // datetime: req.datetime,
+            name: req.body.name,
+            categoryId: req.body.categoryId,
+            description: req.body.description,
+            amount: req.body.amount,
+            methodId: req.body.methodId
         },{
             where:{
-                id: req.transactionId
+                id: req.body.id
             }
         })
         .then(()=>{
-            let token = signToken(200)
-            res.json({token})
+            res.json(200)
         })
         .catch((error)=>{
             console.log(error)
@@ -249,21 +336,17 @@ const mainControllers = {
                 meta: {
                     status: 400
                 }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
+            } 
+            res.json(response)  
 
         })
     },
     deleteTransaction: (req, res) =>{
         Transaction.destroy({
-            where:{
-                id: req.transactionId
-            }
+            where:{ id: req.body.id }
         })
         .then(()=>{
-            let token = signToken(200)
-            res.json({token})
+            res.json(200)
         })
         .catch((error)=>{
             console.log(error)
@@ -271,22 +354,64 @@ const mainControllers = {
                 meta: {
                     status: 400
                 }
-            }
-            let errorToken = signToken(response)
-            res.json({errorToken})    
+            } 
+            res.json(response)  
 
         })
     }
 
-
 }
 
-function signToken(payload){
-    let token = jwt.sign({ payload }, 'secretkey', {
-		algorithm: "HS256",
-		expiresIn: '1h',
-	})
-    return token
-}
 
 module.exports = mainControllers;
+
+
+
+// include: [{
+//     model: Category
+// },{
+//     model: Method
+// }]
+
+
+
+// getUserAccountsData: (req, res) =>{
+
+//     Transaction.findAll({
+//         include: [{
+//             model: Account,
+//             required: true,
+//             include: [{
+//                 model: User,
+//                 required: true,
+//                 where: {
+//                     id: req.userData.id 
+//                 }
+//             }]
+//         }],
+//         attributes: [
+//             'accountId',
+//             [sequelize.fn('sum', sequelize.col('amount')), 'total_amount'],
+//         ],
+//         group: ['accountId']
+//     })
+//     .then((balance)=>{
+//         let response = {
+//             meta: {
+//                 status: 200,
+//             },
+//             data: balance
+//         }
+//         res.json(response)
+//     })
+//     .catch((error)=>{
+//         console.log(error)
+//         let response = {
+//             meta: {
+//                 status: 400
+//             }
+//         } 
+//         res.json(response)  
+
+//     })
+// },
