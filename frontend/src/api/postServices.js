@@ -2,7 +2,42 @@ const URL = 'http://localhost:3001/api'
 
 const postServices = {
     
-
+    getUserAccounts: async () => {
+        return getData('getUserAccounts')
+    },
+    getCategories: async () => {
+        return getData('getCategories')
+    },
+    getMethods: async () => {
+        return getData('getMethods')
+    },
+    getUserAccountData: async (data) => {
+        return getData('getUserAccountData', data)
+    },
+    getAccountData: async (data) => {
+        return getData('getAccountData', data)
+    },
+    getUserAccountsData: async (data) => {
+        return getData('getUserAccountsData', data)
+    },
+    getAccountAllTransactions: async (data) => {
+        return getData('getAccountAllTransactions', data)
+    },
+    getUserLastTransactions: async () => {
+        return getData('getUserLastTransactions')
+    },
+    getTransactionById: async () => {
+        return getData('getTransactionById')
+    },
+    newAccount: async (data) =>{
+        return getData('newAccount', data)
+    },
+    newTransaction: async (data) => {
+        return getData('newTransaction', data)
+    },
+    editTransaction: async (data) => {
+        return getData('editTransaction', data)
+    },
     deleteTransaction: async (data) => {
         return getData('deleteTransaction', data)
     },
@@ -12,6 +47,7 @@ const postServices = {
     loginUser: async (data) => {
         return getData('user/login', data)
     }
+    
 }
 
 export default postServices;
