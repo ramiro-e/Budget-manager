@@ -15,21 +15,13 @@ module.exports =  (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true
         },
-        description: {
-            type: DataTypes.TEXT,
-            allowNull: false
-        },
         color: {
             type: DataTypes.TEXT,
             allowNull: false
-        },
-        createdAt:{
-            type:DataTypes.DATE,
-            allowNull: true
         }
     }
     let config = {
-        tableName: "users",
+        tableName: "account",
         timestamps: false
     }
     const Account = sequelize.define(alias, cols, config);
@@ -37,12 +29,10 @@ module.exports =  (sequelize, DataTypes) => {
     Account.associate = function (models) {
         
         Account.belongsTo(models.User,{
-            as: "user",
             foreingKey: "userId"
         });
 
         Account.hasMany(models.Transaction,{
-            as: "account",
             foreingKey: "accountId"
         });
     }

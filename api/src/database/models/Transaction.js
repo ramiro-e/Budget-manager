@@ -31,10 +31,6 @@ module.exports =  (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
-        depOrWit: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
         methodId: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -45,25 +41,22 @@ module.exports =  (sequelize, DataTypes) => {
         }
     }
     let config = {
-        tableName: "accounts",
-        timestamps: false
+        tableName: "transactions",
+        timestamps: true
     }
     const Transaction = sequelize.define(alias, cols, config);
 
     Transaction.associate = function (models) {
 
         Transaction.belongsTo(models.Account,{
-            as: "account",
             foreingKey: "accountId"
         });
 
         Transaction.belongsTo(models.Category,{
-            as: "category",
             foreingKey: "categoryId"
         });
         
         Transaction.belongsTo(models.Method,{
-            as: "method",
             foreingKey: "methodId"
         });
     }

@@ -10,10 +10,6 @@ module.exports =  (sequelize, DataTypes) => {
         name:{ 
             type: DataTypes.STRING,
             allowNull: false
-        },
-        createdAt:{
-            type:DataTypes.DATE,
-            allowNull: true
         }
     }
     let config = {
@@ -24,7 +20,6 @@ module.exports =  (sequelize, DataTypes) => {
 
     Category.associate = function (models) {
         Category.hasMany(models.Transaction,{
-            as: "category",
             foreingKey: "categoryId"
         });
     }

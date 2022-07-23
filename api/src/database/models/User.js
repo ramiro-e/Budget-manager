@@ -22,10 +22,6 @@ module.exports =  (sequelize, DataTypes) => {
         password: {
             type: DataTypes.TEXT,
             allowNull: false
-        },
-        createdAt:{
-            type:DataTypes.DATE,
-            allowNull: true
         }
     }
     let config = {
@@ -37,7 +33,6 @@ module.exports =  (sequelize, DataTypes) => {
     User.associate = function (models) {
         
         User.hasMany(models.Account,{
-            as: "user",
             foreingKey: "userId"
         });
     }
