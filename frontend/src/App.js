@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/App.css';
 import { Routes, Route } from "react-router-dom";
@@ -10,6 +10,21 @@ import RouteGuard from './RouteGuard';
 
 function App() {
 
+
+  const [loginToken, setLoginToken] = useState(null);
+
+  useEffect(() => {
+    if(loginToken !== null){
+      let now = new Date()
+      let ttl = 21600000 // (6hs como el token)
+      let newToken = {token: loginToken, expiration: now.getTime() + ttl}
+      console.log(newToken)
+      localStorage.setItem('loginToken', JSON.stringify(newToken));
+    }
+  }, [loginToken]);
+
+   
+
   return (
     <div className="container-md min-vh-100">
 
@@ -19,7 +34,7 @@ function App() {
           <Route path="account/:id" element={<Account />} />
         </Route>
         <Route path="register" element={<Register />} />
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={<Login setLoginToken={setLoginToken}/>} />
       </Routes>
 
       
