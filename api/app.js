@@ -21,7 +21,7 @@ app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/api', mainRouter);
-app.use('/api/users', userRouter);
+app.use('/api/user', userRouter);
 
 
 app.set('port', process.env.PORT || "3001");
