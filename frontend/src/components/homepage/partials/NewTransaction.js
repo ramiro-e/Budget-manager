@@ -4,8 +4,11 @@ import {Link} from "react-router-dom";
 import { Button } from 'react-bootstrap';
 import { PencilSquare } from 'react-bootstrap-icons';
 
-function NewTransaction(){
+function NewTransaction({newMethod}){
 
+    function handleClick(){
+        newMethod(undefined)
+    }
     
     return(
         <React.Fragment>

@@ -1,13 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import postServices from '../../api/postServices';
 import '../../assets/Home.css';
 
 import AccountHeader from './partials/AccountHeader';
 import AccountCards from './partials/AccountCards';
+import NewAccount from './partials/NewAccount';
+import Modal from 'react-bootstrap/Modal';
 import LastTransactions from './partials/LastTransactions';
 import NewTransaction from './partials/NewTransaction';
 import TransactionPreviewEdit from './partials/TransactionPreviewEdit';
 
 function Home(){
+
+    const [accountsCards, setAccountCards] = useState([]);
+    const [lastTransactions, setUserLastTransactions] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
+
+
+    const getUserLastTransactions = async () => {
+        const response = await postServices.getUserLastTransactions();
+        let transactions = response.data
+        setUserLastTransactions(transactions); 
+    }
+   
+    const getUserAccountsData = async () => {
+        const response = await postServices.getUserAccountsData();
+        let accounts = response.data
+        setAccountCards(accounts)
+    }
+
+    const [accounts, setAccounts] = useState(false);
+    const [categories, setCategories] = useState(false);
+    const [methods, setMethods] = useState(false);
+
+    const getUserAccounts = async () => {
+        const response = await postServices.getUserAccounts();
+        let accounts = response.data
+        setAccounts(accounts); 
+    }
+    const getCategories = async () => {
+        const response = await postServices.getCategories();
+        let categories = response.data
+        setCategories(categories); 
+    }
+    const getMethods = async () => {
+        const response = await postServices.getMethods();
+        let methods = response.data
+        setMethods(methods); 
+    }
+
 
 
     const [TPE_show, setTPE_show] = useState(false);
@@ -45,6 +86,41 @@ function Home(){
         setTPE_new(false)
     }
 
+
+    async function newTransaction(data){
+        const response = await postServices.newTransaction(data);
+        setTPE_new(false)
+        setTPE_edit(false)
+        updateStates()
+    }
+
+    async function editTransaction(data){
+        const response = await postServices.editTransaction(data);
+        setTPE_new(false)
+        setTPE_edit(false)
+        updateStates()
+    }
+
+    async function deleteTransaction(data){
+        const response = await postServices.deleteTransaction(data);
+        setTPE_show(false)
+        updateStates()
+    }
+
+    function updateStates(){
+        getUserLastTransactions();
+		getUserAccountsData();
+    }
+
+	useEffect( ()=> {
+        getUserAccounts();
+        getCategories();
+        getMethods();
+
+		getUserLastTransactions();
+		getUserAccountsData();
+    },[])
+
     return(
         <React.Fragment>
             <main>    
@@ -59,7 +135,7 @@ function Home(){
                         </div>
                         <div className="lastTransactionPreviewEdit col-md-6">
                             {TPE_show ? 
-                            <TransactionPreviewEdit transaction={TPE_data} editState={TPE_edit}  newState={TPE_new} cancelMethod={cancelTPE} editMethod={editTPE}  /> 
+                            <TransactionPreviewEdit transaction={TPE_data} accounts={accounts} categories={categories} methods={methods} editState={TPE_edit}  newState={TPE_new} cancelMethod={cancelTPE} editMethod={editTPE} editTransaction={editTransaction} newTransaction={newTransaction} deleteTransaction={deleteTransaction} /> 
                             : 
                             <NewTransaction newMethod={newTPE}/>}
                         </div>
