@@ -14,7 +14,7 @@ function AccountInfo({accountInfo}){
     return(
         <React.Fragment>
             <div className="text-decoration-none flex-fill">
-                <div className={`bgcolor-${accountInfo.Account.color} p-2 rounded my-2 shadow-sm d-flex justify-content-between`}>
+                <div className={`bg-${accountInfo.Account.color} p-2 rounded my-2 shadow-sm d-flex justify-content-between`}>
                     <h4 className="m-0 fw-bold overflow-protection text-light">{accountInfo.Account.name.toUpperCase()}</h4>
                     <h5 className={`m-0 fw-bold text-${valuecolor}`}>{value}</h5>
                 </div>
@@ -24,7 +24,7 @@ function AccountInfo({accountInfo}){
 }
 
 AccountInfo.defaultProps = {accountInfo:{
-    Account: { color:'', name:''},
+    Account: { color:'primary', name:'...'},
     total_amount: 0
 
 }
