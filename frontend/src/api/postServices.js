@@ -41,6 +41,9 @@ const postServices = {
     deleteTransaction: async (data) => {
         return getData('deleteTransaction', data)
     },
+    checkEmail: async (data) => {
+        return getData('user/checkEmail', data)
+    },
     registerUser: async (data) => {
         return getData('user/register', data)
     },

@@ -62,6 +62,7 @@ const ValidationRegister = (req, res, next) => {
 router.post('/login', validationLogin ,userController.login);
 router.post('/logout', userController.logout);
 
+router.post('/checkEmail' ,userController.checkEmail);
 router.post('/register', ValidationRegister ,userController.register);
 
 
