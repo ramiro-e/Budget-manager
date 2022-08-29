@@ -57,11 +57,9 @@ function Home(){
     const [TPE_new , setTPE_new ] = useState(false);
     const [TPE_data, setTPE_data] = useState(undefined);
 
-    const sleep = (milliseconds=1) => new Promise(resolve => setTimeout(resolve, milliseconds))
 
-    async function previewTPE(transactionProps){
+    function previewTPE(transactionProps){
         setTPE_show(true)
-        await sleep(1)
         setTPE_data(transactionProps)
         setTPE_new(false)
         setTPE_edit(false)
@@ -129,7 +127,7 @@ function Home(){
     return(
         <React.Fragment>
             {accountsCards.length > 0 ?
-                <main>    
+                <main className="min-vh-100">    
                     <section className="AccountContainer">
                         <AccountHeader setModalShow={setModalShow} updateStates={updateStates}/>
                         <AccountCards accountsCards={accountsCards} setModalShow={setModalShow}/>

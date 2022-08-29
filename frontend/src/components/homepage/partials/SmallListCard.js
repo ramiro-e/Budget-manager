@@ -43,7 +43,7 @@ function SmallListCard({transaction, previewMethod}){
         <React.Fragment>
             <div className="me-2 text-decoration-none" onClick={handleClick}>
                 <div className=" mb-3 mt-1 mx-1 rounded shadow-sm d-flex">
-                    <div className={`color-tab bgcolor-${Account.color} rounded-start`}></div>
+                    <div className={`color-tab bg-${Account.color} rounded-start`}></div>
                     <div className={`bg-light  rounded-end px-2 flex-fill`}>
                         <div>
                             <p className="m-0">{name}</p>
