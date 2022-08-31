@@ -18,7 +18,6 @@ function App() {
       let now = new Date()
       let ttl = 21600000 // (6hs como el token)
       let newToken = {token: loginToken, expiration: now.getTime() + ttl}
-      console.log(newToken)
       localStorage.setItem('loginToken', JSON.stringify(newToken));
     }
   }, [loginToken]);
