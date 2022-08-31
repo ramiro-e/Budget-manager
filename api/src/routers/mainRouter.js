@@ -16,7 +16,6 @@ router.post('/newTransaction', authMiddleware, mainController.newTransaction);
 router.post('/editTransaction', authMiddleware, mainController.editTransaction);
 router.post('/deleteTransaction', authMiddleware, mainController.deleteTransaction);
 
-router.post('/test', authMiddleware, (req, res)=>{console.log(req)});
 
 
 module.exports = router;

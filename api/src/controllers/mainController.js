@@ -86,7 +86,6 @@ const mainControllers = {
                 where:{userId: req.userData.id},
                 raw: true
             })
-            console.log(userAccounts)
             let accountsWithBalance = []
             for(let account of userAccounts){
                 try {
@@ -100,9 +99,9 @@ const mainControllers = {
                     })
                     let accountCopy = {...account}
                     if(balance[0]){
-                        accountCopy['balance'] = balance[0].amount
+                        accountCopy.balance = balance[0].amount
                     }else{
-                        accountCopy['balance'] = 0
+                        accountCopy.balance = 0
                     }
                     accountsWithBalance.push(accountCopy)
                 } catch (error) {
@@ -216,7 +215,6 @@ const mainControllers = {
             limit: 10            
         })
         .then((lastTransactions)=>{
-            // console.log("\x1b[36m",lastTransactions)
 
             let response = {
                 meta: {
@@ -270,7 +268,6 @@ const mainControllers = {
     newAccount: (req, res) =>{
         let colors = ['f94144','f3722c','f8961e','f9844a','f9c74f','90be6d','43aa8b','4d908e','577590','277da1']
         let randomColor = colors[Math.floor(Math.random()*colors.length)];
-        console.log('\x1b[36m%s\x1b[0m', randomColor)
         Account.create({
             userId: req.userData.id,
             name: req.body.name,
@@ -364,54 +361,3 @@ const mainControllers = {
 
 
 module.exports = mainControllers;
-
-
-
-// include: [{
-//     model: Category
-// },{
-//     model: Method
-// }]
-
-
-
-// getUserAccountsData: (req, res) =>{
-
-//     Transaction.findAll({
-//         include: [{
-//             model: Account,
-//             required: true,
-//             include: [{
-//                 model: User,
-//                 required: true,
-//                 where: {
-//                     id: req.userData.id 
-//                 }
-//             }]
-//         }],
-//         attributes: [
-//             'accountId',
-//             [sequelize.fn('sum', sequelize.col('amount')), 'total_amount'],
-//         ],
-//         group: ['accountId']
-//     })
-//     .then((balance)=>{
-//         let response = {
-//             meta: {
-//                 status: 200,
-//             },
-//             data: balance
-//         }
-//         res.json(response)
-//     })
-//     .catch((error)=>{
-//         console.log(error)
-//         let response = {
-//             meta: {
-//                 status: 400
-//             }
-//         } 
-//         res.json(response)  
-
-//     })
-// },

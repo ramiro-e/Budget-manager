@@ -9,14 +9,14 @@ function SmallListCard({transaction, previewMethod}){
     let relativeTransactionDate
     let options = {}
 
-    if(today.getFullYear() > transactionDate.getFullYear()){options['year'] = 'numeric'} ;
+    if(today.getFullYear() > transactionDate.getFullYear()){options.year = 'numeric'} ;
     if (today.getFullYear() === transactionDate.getFullYear() && today.getMonth() === transactionDate.getMonth() && today.getDate() === transactionDate.getDate()) {
-        options['hour'] = '2-digit';
-        options['minute'] = '2-digit';
+        options.hour = '2-digit';
+        options.minute = '2-digit';
         relativeTransactionDate = transactionDate.toLocaleTimeString('es-AR', options)
     }else{
-        options['month'] = 'long';
-        options['day'] = 'numeric';
+        options.month = 'long';
+        options.day = 'numeric';
         relativeTransactionDate = transactionDate.toLocaleDateString('es-AR', options)
     }
 
@@ -35,8 +35,6 @@ function SmallListCard({transaction, previewMethod}){
     function handleClick(){
         previewTransaction(transaction)
     }
-
-    // console.log(Object.getOwnPropertyNames(props))
 
     return(
         <React.Fragment>

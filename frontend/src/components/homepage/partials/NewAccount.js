@@ -7,10 +7,8 @@ import postServices from '../../../api/postServices';
 function NewAccount({setModalShow, updateStates}) {
 
     async function handleSaveAccount(){
-        console.log('handleSaveAccount')
         let accountName = document.getElementById('accountName').value
         let response = await postServices.newAccount({name: accountName})
-        console.log(response)
         if (response === 200){
             setModalShow(false)
             updateStates()

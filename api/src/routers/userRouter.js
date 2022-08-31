@@ -53,7 +53,6 @@ const ValidationRegister = (req, res, next) => {
         res.send(403);
         return
     }else{
-        console.log('next')
         next();
     }
 };
@@ -64,36 +63,6 @@ router.post('/logout', userController.logout);
 
 router.post('/checkEmail' ,userController.checkEmail);
 router.post('/register', ValidationRegister ,userController.register);
-
-
-
-
-// router.get("/tokeninfo", (req , res) => {
-//     const user = {
-//         id: 1,
-//         nombre : "Henry",
-//         email: "henry@email.com"
-//     }
-
-//     jwt.sign({user}, 'secretkey', {expiresIn: '1h'}, (err, token) => {
-//         res.json({
-//             token
-//         });
-//     });
-    
-
-// });
-
-// router.post("/tokencheck", authorize, (req , res) => {
-//     console.log('tokencheck completed')    
-
-// });
-
-
-// res.json({
-//     mensaje: "Post fue creado",
-//     authData
-// });
 
 
 module.exports = router;

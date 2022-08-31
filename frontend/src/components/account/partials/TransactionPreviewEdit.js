@@ -23,7 +23,6 @@ function TransactionPreviewEdit({transaction, categories, methods, editState, ne
     const { values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, setValues } = useFormik({
         initialValues: transaction,
         onSubmit: async (values)=>{
-            console.log("submit!")
             if(values.depOrWit == 2){
                 values.amount = -Math.abs(values.amount)
             }
@@ -39,7 +38,7 @@ function TransactionPreviewEdit({transaction, categories, methods, editState, ne
     })
 
     useEffect( ()=> {
-        transaction.amount < 0 ? transaction['depOrWit'] = 2 : transaction['depOrWit'] = 1
+        transaction.amount < 0 ? transaction.depOrWit = 2 : transaction.depOrWit = 1
         setValues(transaction)
     },[transaction])
 

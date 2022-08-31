@@ -4,6 +4,21 @@ import {Receipt} from 'react-bootstrap-icons'
 
 function TransactionList({transactions, previewMethod}){
 
+    let orderedTransactions = orderByMostRecent(transactions)
+
+    function orderByMostRecent(transactionsToBeSorted){
+        let sortedTransactions = [...transactionsToBeSorted]
+        sortedTransactions.sort((a, b) => {
+            let date1 = new Date(a.createdAt);
+            let date2 = new Date(b.createdAt);
+            if (date1 > date2) return -1;
+            if (date1 < date2) return 1;
+            return 0;
+        });
+        return sortedTransactions
+    }
+
+
     return (
         <React.Fragment>
             <h3 className="m-0 ms-1">Ultimas Transacciones</h3>
@@ -15,7 +30,7 @@ function TransactionList({transactions, previewMethod}){
             </div> 
             :
             <div className="transaction-cards-container mt-2">
-                {transactions.map((transaction,index)=>{
+                {orderedTransactions.map((transaction,index)=>{
                     return <SmallListCard transaction={transaction} previewMethod={previewMethod} key= {index}/>
                 })}      
             </div>

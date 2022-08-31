@@ -38,7 +38,7 @@ function TransactionPreviewEdit({transaction, accounts, categories, methods, edi
     })
 
     useEffect( ()=> {
-        transaction.amount < 0 ? transaction['depOrWit'] = 2 : transaction['depOrWit'] = 1
+        transaction.amount < 0 ? transaction.depOrWit = 2 : transaction.depOrWit = 1
         setValues(transaction)
     },[transaction])
 
