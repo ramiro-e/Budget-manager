@@ -28,7 +28,7 @@ Insert gif or link to demo
 
 Clonar repositorio
 ```bash
-  git clone 
+  git clone https://github.com/ramiro-e/Budget-manager.git
 ```
 
 Correr el backend
