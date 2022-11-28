@@ -2,6 +2,8 @@
 # Gestor de presupuesto
 
 Una webapp para llevar cuenta de gastos cotidianos o manejar un presupuesto mensual
+https://user-images.githubusercontent.com/76258273/204383090-8c454624-cf89-4bdb-b2f5-f6bf1a450b3d.mp4
+
 
 ## Caracteristicas
 
