@@ -3,9 +3,6 @@
 
 Una webapp para llevar cuenta de gastos cotidianos o manejar un presupuesto mensual
 
-[https://user-images.githubusercontent.com/76258273/204383280-7f7d2fe1-a7a7-4e9f-a198-c4dad11e03e9.mp4](https://user-images.githubusercontent.com/76258273/204383280-7f7d2fe1-a7a7-4e9f-a198-c4dad11e03e9.mp4)
-
-
 
 ## Caracteristicas
 
