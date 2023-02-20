@@ -14,9 +14,9 @@ Una webapp para llevar cuenta de gastos cotidianos o manejar un presupuesto mens
 - Filtros por orden, tipo y categoria 
 ## Tech Stack
 
-### Cliente:
-<a href="https://github.com/ramiro-e/Budget-manager/blob/main/frontend/package.json" rel="some text">![Dependencias del cliente](https://user-images.githubusercontent.com/76258273/202773130-5affc542-195b-4672-850a-e8c90378eeb5.png)</a>
 ### Servidor:
+<a href="https://github.com/ramiro-e/Budget-manager/blob/main/frontend/package.json" rel="some text">![Dependencias del cliente](https://user-images.githubusercontent.com/76258273/202773130-5affc542-195b-4672-850a-e8c90378eeb5.png)</a>
+### Cliente:
 <a href="https://github.com/ramiro-e/Budget-manager/blob/main/api/package.json" rel="some text">![Dependencias del servidor](https://user-images.githubusercontent.com/76258273/202773007-3e57e941-0eec-4942-a832-3ab065418fc4.png)</a>
 
 
